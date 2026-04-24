@@ -1,4 +1,4 @@
-package com.example.SpringSecurityDemo.config;
+package com.example.VideoToSummaryGenerator.config;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

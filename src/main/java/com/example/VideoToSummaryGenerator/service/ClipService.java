@@ -4,6 +4,7 @@ import com.example.VideoToSummaryGenerator.entity.ArtifactType;
 import com.example.VideoToSummaryGenerator.entity.VideoAsset;
 import com.example.VideoToSummaryGenerator.repository.ArtifactRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.nio.file.Paths;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ClipService {
 
     private final ArtifactRepository artifactRepo;
@@ -22,6 +24,11 @@ public class ClipService {
         // Create clips directory
         Path clipsDir = Paths.get(video.getStoragePath(), "clips");
         Files.createDirectories(clipsDir);
+
+        if (artifactRepo.existsByVideoAndType(video, ArtifactType.CLIP)) {
+            log.info("Clip already exists for video {}", video.getId());
+            return;
+        }
 
         // Create dummy clip file
         Path clipPath = clipsDir.resolve("clip_1.mp4");

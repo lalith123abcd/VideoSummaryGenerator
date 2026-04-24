@@ -13,6 +13,7 @@ import com.example.VideoToSummaryGenerator.repository.ArtifactRepository;
 import com.example.VideoToSummaryGenerator.repository.JobRepository;
 import com.example.VideoToSummaryGenerator.repository.VideoAssetRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import java.nio.file.Paths;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ScreenShotService {
     private final ArtifactRepository artifactRepo;
 
@@ -29,7 +31,10 @@ public class ScreenShotService {
     public void generate(VideoAsset video) throws IOException {
         Path screenshotsDir = Paths.get(video.getStoragePath(), "screenshots");
         Files.createDirectories(screenshotsDir);
-
+        if (artifactRepo.existsByVideoAndType(video, ArtifactType.SCREENSHOT)) {
+            log.info("Screenshot already exists for video {}", video.getId());
+            return;
+        }
         // Create dummy screenshot file
         Path screenshotPath = screenshotsDir.resolve("screenshot_1.png");
         Files.write(screenshotPath, "Dummy screenshot content".getBytes());

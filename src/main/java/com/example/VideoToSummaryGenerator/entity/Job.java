@@ -23,6 +23,7 @@ public class Job {
     @Column(nullable = false)
     private JobStatus status;
 
+    @Builder.Default
     private Integer retryCount = 0;
 
     @ManyToOne

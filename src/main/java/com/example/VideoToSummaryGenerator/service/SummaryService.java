@@ -5,6 +5,7 @@ import com.example.VideoToSummaryGenerator.entity.ArtifactType;
 import com.example.VideoToSummaryGenerator.entity.VideoAsset;
 import com.example.VideoToSummaryGenerator.repository.ArtifactRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.nio.file.Paths;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SummaryService {
 
     private final ArtifactRepository artifactRepo;
@@ -21,7 +23,10 @@ public class SummaryService {
     public void generate(VideoAsset video) throws IOException {
 
         Path summaryPath = Paths.get(video.getStoragePath(), "Summary.md");
-
+        if (artifactRepo.existsByVideoAndType(video, ArtifactType.SUMMARY)) {
+            log.info("Summary already exists for video {}", video.getId());
+            return;
+        }
         String summaryContent = """
         # Video Summary
 

@@ -1,7 +1,7 @@
-package com.example.SpringSecurityDemo.config;
+package com.example.VideoToSummaryGenerator.config;
 
-import com.example.SpringSecurityDemo.config.security.JwtAuthFilter;
-import com.example.SpringSecurityDemo.services.UserService;
+import com.example.VideoToSummaryGenerator.config.security.JwtAuthFilter;
+import com.example.VideoToSummaryGenerator.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

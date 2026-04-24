@@ -6,6 +6,7 @@ import com.example.VideoToSummaryGenerator.repository.ArtifactRepository;
 import com.example.VideoToSummaryGenerator.repository.JobRepository;
 import com.example.VideoToSummaryGenerator.repository.VideoAssetRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+
 public class JobService {
 
 
@@ -34,6 +37,10 @@ public class JobService {
 
         for(Job job:queuedJobs){
             try{
+                if (job.getStatus() == JobStatus.SUCCESS) {
+                    log.info("Skipping already completed job {}", job.getId());
+                    continue;
+                }
                 System.out.println("Processing Job: " + job.getId());
 
                 job.setStatus(JobStatus.PROCESSING);

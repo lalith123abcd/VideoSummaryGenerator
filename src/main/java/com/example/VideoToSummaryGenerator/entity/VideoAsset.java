@@ -23,6 +23,7 @@ public class VideoAsset {
     @Column(nullable = false)
     private String filename;
 
+
     @Column(nullable = false)
     private String storagePath;
 
